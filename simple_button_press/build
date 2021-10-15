@@ -1,0 +1,1 @@
+g++ -o toy_organ main.cpp -lpigpio -lrt -lpthread
