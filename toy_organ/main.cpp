@@ -1,4 +1,4 @@
-// Simple program to read a button press
+
 #include <unistd.h> 
 
 #include <iostream>
@@ -13,23 +13,21 @@ using std::endl;
 using std::vector;
 using std::map;
 
-const int speaker_pin_number = 16;
+const int speaker_pin = 16;
 
-// Starts at A
 vector<int> key_pins = {
+    17,
+    27,
+    22,
     5,
     6,
-    17,
-    22,
-    23,
-    24,
     25,
-    27
+    24,
+    23
 };
 
-// Starts at A
 // Units = htz
-vector<int> key_notes = {
+vector<int> key_tones = {
     262, // Middle C
     294, // D
     330, // E
@@ -40,30 +38,12 @@ vector<int> key_notes = {
     523  // C
 };
 
-// 
+// Given the GPIO pin number, get the index, ie the
+// number in the array for it and the tone
 map<int, int> pin_note_index_map;
-vector<int> tones;
 vector<bool> key_states(8, false);
 
 /*
-
-void aFunction(int gpio, int level, uint32_t tick)
-{
-   printf("GPIO %d became %d at %d", gpio, level, tick);
-}
-
-// call aFunction whenever GPIO 4 changes state
-gpioSetAlertFunc(4, aFunction);
-
-*/
-
-/*
-
-void bFunction(void)
-{
-   printf("two seconds have elapsed");
-}
-
 // call bFunction every 2000 milliseconds
 gpioSetTimerFunc(0, 2000, bFunction);
 
@@ -77,17 +57,13 @@ gpioPulse_t pulse[] = {
 
 // Reference
 // http://abyz.me.uk/rpi/pigpio/cif.html#gpioWaveChain
-// 166 / 333 microseconds
-// 333 microseconds = 0.00033333333 seconds = 3000 htz?
-
-
 void makeToneMicroseconds(int uSeconds) {
-    pulse[0].gpioOn = (1<<speaker_pin_number);
+    pulse[0].gpioOn = (1<<speaker_pin);
     pulse[0].gpioOff = 0;
     pulse[0].usDelay = uSeconds / 2;
 
     pulse[1].gpioOn = 0;
-    pulse[1].gpioOff = (1<<speaker_pin_number);
+    pulse[1].gpioOff = (1<<speaker_pin);
     pulse[1].usDelay = uSeconds / 2;
 
     gpioWaveAddNew();
@@ -111,28 +87,21 @@ void stopSound() {
     gpioWaveTxStop();
 }
 
+// This logic is incorrect:
+// https://music.stackexchange.com/questions/42694/what-is-a-chord-in-terms-of-frequencies
+// The frequencies don't combine by a simple sum
 int currentToneHertz() {
     int tone_sum = 0;
     
-    for (int i = 0; i < key_notes.size(); ++i) {
+    for (int i = 0; i < key_tones.size(); ++i) {
         if (key_states[i] == false) {
             continue;
         }
 
-        tone_sum += key_notes[i];
+        tone_sum += key_tones[i];
     }
 
     return tone_sum;
-}
-
-bool buttonsArePressed() {
-    for (bool state : key_states) {
-        if (state == true) {
-            return true;
-        }
-    }
-
-    return false;
 }
 
 void buttonCallbackFunction(int gpio, int level, uint32_t tick) {
@@ -141,22 +110,24 @@ void buttonCallbackFunction(int gpio, int level, uint32_t tick) {
         return;
     }
 
+    cout << "Pin: " << gpio << " -- Level: " << level << endl;
+    
     int note_index = pin_note_index_map[gpio];
 
     key_states[note_index] = level == 1 ? true : false;
 
-    if (buttonsArePressed() == false) {
+    int current_tone = currentToneHertz();
+
+    if (current_tone == 0) {
         stopSound();
         return;
     }
-
-    int current_tone = currentToneHertz();
 
     makeToneHertz(current_tone);    
 }
 
 void setPinModes() {
-    gpioSetMode(speaker_pin_number, PI_OUTPUT);
+    gpioSetMode(speaker_pin, PI_OUTPUT);
 
     for (auto p : key_pins) {
         gpioSetMode(p, PI_INPUT);
@@ -164,7 +135,6 @@ void setPinModes() {
 }
 
 void setupCallbacks() {
-    // PI 4 has 40 pins
     pin_note_index_map = map<int, int>();
     
     for (int i = 0; i < key_pins.size(); ++i) {
@@ -183,9 +153,10 @@ int main(int argc, char** argv) {
     cout << "Started up GPIO" << endl;
 
     setPinModes();
+    setupCallbacks();
     
     while (true) {
-        cout << ".";
+        cout << gpioTick() << endl;
 
         usleep(1000000/4);
     }
