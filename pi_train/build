@@ -1,0 +1,1 @@
+g++ -std=c++17 -o pi_train main.cpp -lpigpio -lrt -lpthread
