@@ -32,7 +32,7 @@ vector<vector<int>> step_sequence = { { 1, 0, 0, 1 },
                                       { 0, 0, 1, 1 },
                                       { 0, 0, 0, 1 } };
 
-double step_sleep = 0.001;
+double step_sleep = 0.002;
 
 int step_count = 4096;
 
