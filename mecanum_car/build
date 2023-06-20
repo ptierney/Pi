@@ -1,0 +1,1 @@
+g++ -std=c++17 -o mecanum_car main.cpp -lpigpio -lrt -lpthread
