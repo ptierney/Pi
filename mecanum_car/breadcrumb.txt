@@ -1,0 +1,8 @@
+The hard part is figuring out how to drive the adafruit h-bridge.
+
+Looks like it needs PWM.
+
+pigpio can do PWM: http://abyz.me.uk/rpi/pigpio/cif.html#gpioPWM
+
+But what is the format? Here's the data sheet: https://cdn-shop.adafruit.com/product-files/4489/4489_datasheet-l9110.pdf
+
