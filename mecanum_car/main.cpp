@@ -22,9 +22,19 @@ bool running = true;
 
 // sigint code from
 // https://stackoverflow.com/questions/1641182/how-can-i-catch-a-ctrl-c-event
-void my_handler(int s){
+void interruptHandler(int s){
     cout << "Caught signal " << s << endl;
     running = false;
+}
+
+void setupSigInt() {
+    struct sigaction sigIntHandler;
+
+    sigIntHandler.sa_handler = interruptHandler;
+    sigemptyset(&sigIntHandler.sa_mask);
+    sigIntHandler.sa_flags = 0;
+
+    sigaction(SIGINT, &sigIntHandler, NULL);
 }
 
 int main(int argc, char** argv) {
@@ -33,34 +43,24 @@ int main(int argc, char** argv) {
         return -1;
     }
 
-    struct sigaction sigIntHandler;
-
-    sigIntHandler.sa_handler = my_handler;
-    sigemptyset(&sigIntHandler.sa_mask);
-    sigIntHandler.sa_flags = 0;
-
-    sigaction(SIGINT, &sigIntHandler, NULL);
+    setupSigInt();
     
     cout << "Started up GPIO" << endl;
 
     gpioSetMode(WHEEL_PIN_A, PI_OUTPUT);
     gpioSetMode(WHEEL_PIN_B, PI_OUTPUT);
 
-    gpioPWM(WHEEL_PIN_A, 255);
+    gpioPWM(WHEEL_PIN_A, 100);
     gpioPWM(WHEEL_PIN_B, 0);
 
-    while (true) {
+    while (running) {
         cout << gpioTick() << endl;
-
         usleep(1000000/4);
-
-        if (!running) {
-            gpioPWM(WHEEL_PIN_A, 0);
-            gpioPWM(WHEEL_PIN_B, 0);
-
-            break;
-        }
     }
+
+    // Reset pins
+    gpioPWM(WHEEL_PIN_A, 0);
+    gpioPWM(WHEEL_PIN_B, 0);
 
     cout << "Shutting down GPIO" << endl;
     
