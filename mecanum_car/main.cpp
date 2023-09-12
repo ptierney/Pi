@@ -90,7 +90,7 @@ int main(int argc, char** argv) {
     gpioPWM(WHEEL_PIN_RB_R, 0);
 
     while (running) {
-        cout << gpioTick() << endl;
+        //cout << gpioTick() << endl;
         usleep(1000000/4);
     }
 
