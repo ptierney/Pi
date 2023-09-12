@@ -1,0 +1,1 @@
+g++ -std=c++17 -o car_driver main.cpp -lncurses
