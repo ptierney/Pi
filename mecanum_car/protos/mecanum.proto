@@ -3,7 +3,7 @@ syntax = "proto3";
 package mecanum;
 
 service CarServer {
-    rpc SendMovement (MoveRequest) returns (MoveRely) {}
+    rpc SendMovement (MoveRequest) returns (MoveReply) {}
 }
 
 // All values refer to birds-eye view of car
