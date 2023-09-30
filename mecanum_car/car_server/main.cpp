@@ -15,6 +15,12 @@ using std::endl;
 using std::vector;
 using std::map;
 
+// Breadcrumbs / next steps:
+// * Read the gRPC C++ Tutorial: https://grpc.io/docs/languages/cpp/basics/
+// * Read section on async 
+// * Implement client and server between PI and desktop computer
+// * Have key presses trigger car movement
+
 // Assume where wires protrude is the front of the car
 
 // Naming Guide:

@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package mecanum;
+
+service CarServer {
+    rpc SendMovement (MoveRequest) returns (MoveRely) {}
+}
+
+// All values refer to birds-eye view of car
+message MoveRequest {
+    // Forward = 1000
+    // Back = -1000
+    // No Movement = 0
+    sint32 forward_back = 1;
+
+    // Left = 1000
+    // Back = -1000
+    // No Movement = 0
+    sint32 left_right = 2;
+
+    // Clockwise = 1000
+    // Counterclockwise = -1000
+    // No Rotation = 0
+    sint32 rotation = 3;
+}
+
+message MoveReply {
+    bool success = 1;
+}
