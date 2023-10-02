@@ -1,0 +1,1 @@
+g++ -std=c++17 -o mecanum_car main.cpp ../protos_src/mecanum.grpc.pb.cc ../protos_src/mecanum.pb.cc -I/home/pi/.local/include -I../protos_src -lpigpio -lrt -lpthread -lprotobuf -lgrpc -lgrpc++

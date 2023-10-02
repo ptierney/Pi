@@ -31,40 +31,6 @@ using mecanum::CarServer;
 using mecanum::MoveRequest;
 using mecanum::MoveReply;
 
-
-class CarServerServiceImpl final : public CarServer::Service {
-    Status SendMovement(ServerContext* context, const MoveRequest* request,
-                        MoveReply* reply) override {
-        // do something with the data
-
-        return Status::OK;
-    }
-
-};
-
-
-void RunServer() {
-    std::string server_address = "0.0.0.0:50051";
-
-    CarServerServiceImpl service;
-
-    grpc::EnableDefaultHealthCheckService(true);
-    grpc::reflection::InitProtoReflectionServerBuilderPlugin();
-    ServerBuilder builder;
-    // Listen on the given address without any authentication mechanism.
-    builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
-    // Register "service" as the instance through which we'll communicate with
-    // clients. In this case it corresponds to an *synchronous* service.
-    builder.RegisterService(&service);
-    // Finally assemble the server.
-    std::unique_ptr<Server> server(builder.BuildAndStart());
-    std::cout << "Server listening on " << server_address << std::endl;
-
-    // Wait for the server to shutdown. Note that some other thread must be
-    // responsible for shutting down the server for this call to ever return.
-    server->Wait();
-}
-
 // Breadcrumbs / next steps:
 // * Read the gRPC C++ Tutorial: https://grpc.io/docs/languages/cpp/basics/
 // * Read section on async 
@@ -93,14 +59,29 @@ const int WHEEL_PIN_LB_R = 6;
 const int WHEEL_PIN_RB_F = 17;
 const int WHEEL_PIN_RB_R = 18;
 
+bool RUNNING = true;
+std::unique_ptr<Server> GRPC_SERVER;
 
-bool running = true;
+class CarServerServiceImpl final : public CarServer::Service {
+    Status SendMovement(ServerContext* context, const MoveRequest* request,
+                        MoveReply* reply) override {
+        
+        // Read data
+        // Update GPIO pins
+
+        return Status::OK;
+    }
+};
+
 
 // sigint code from
 // https://stackoverflow.com/questions/1641182/how-can-i-catch-a-ctrl-c-event
 void interruptHandler(int s){
     cout << "Caught signal " << s << endl;
-    running = false;
+    RUNNING = false;
+    
+    //NOTE: don't push any more work onto the server after this call
+    GRPC_SERVER->Shutdown();
 }
 
 void setupSigInt() {
@@ -112,6 +93,30 @@ void setupSigInt() {
 
     sigaction(SIGINT, &sigIntHandler, NULL);
 }
+
+void RunServer() {
+    std::string server_address = "0.0.0.0:50051";
+
+    CarServerServiceImpl service;
+
+    grpc::EnableDefaultHealthCheckService(true);
+    grpc::reflection::InitProtoReflectionServerBuilderPlugin();
+    ServerBuilder builder;
+    // Listen on the given address without any authentication mechanism.
+    builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
+    // Register "service" as the instance through which we'll communicate with
+    // clients. In this case it corresponds to an *synchronous* service.
+    builder.RegisterService(&service);
+    // Finally assemble the server.
+    GRPC_SERVER = std::unique_ptr<Server>(builder.BuildAndStart());
+    
+    std::cout << "Server listening on " << server_address << std::endl;
+
+    // Wait for the server to shutdown. Note that some other thread must be
+    // responsible for shutting down the server for this call to ever return.
+    GRPC_SERVER->Wait();
+}
+
 
 int main(int argc, char** argv) {
     if (gpioInitialise() < 0) {
@@ -145,7 +150,12 @@ int main(int argc, char** argv) {
     gpioPWM(WHEEL_PIN_LB_R, 0);
     gpioPWM(WHEEL_PIN_RB_R, 0);
 
-    while (running) {
+    // I think this blocks
+    RunServer();
+    
+    cout << "Started up gRPC" << endl;
+
+    while (RUNNING) {
         //cout << gpioTick() << endl;
         usleep(1000000/4);
     }
