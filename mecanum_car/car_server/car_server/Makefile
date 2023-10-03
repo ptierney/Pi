@@ -13,20 +13,13 @@ HOST_SYSTEM = $(shell uname | cut -f 1 -d_)
 SYSTEM ?= $(HOST_SYSTEM)
 CXX = g++
 CPPFLAGS += `pkg-config --cflags protobuf grpc absl_flags absl_flags_parse`
-CXXFLAGS += -std=c++14
-ifeq ($(SYSTEM),Darwin)
-LDFLAGS += -L/usr/local/lib `pkg-config --libs --static protobuf grpc++ absl_flags absl_flags_parse $(PROTOBUF_ABSL_DEPS)`\
-           $(PROTOBUF_UTF8_RANGE_LINK_LIBS) \
-           -pthread\
-           -lgrpc++_reflection\
-           -ldl
-else
+CXXFLAGS += -std=c++17
 LDFLAGS += -L/usr/local/lib `pkg-config --libs --static protobuf grpc++ absl_flags absl_flags_parse $(PROTOBUF_ABSL_DEPS)`\
            $(PROTOBUF_UTF8_RANGE_LINK_LIBS) \
            -pthread\
            -Wl,--no-as-needed -lgrpc++_reflection -Wl,--as-needed\
            -ldl
-endif
+
 PROTOC = protoc
 GRPC_CPP_PLUGIN = grpc_cpp_plugin
 GRPC_CPP_PLUGIN_PATH ?= `which $(GRPC_CPP_PLUGIN)`
@@ -37,7 +30,7 @@ vpath %.proto $(PROTOS_PATH)
 
 all: system-check car_server
 
-car_server: helloworld.pb.o helloworld.grpc.pb.o car_server.o
+car_server: mecanum.pb.o mecanum.grpc.pb.o car_server.o
 	$(CXX) $^ $(LDFLAGS) -o $@
 
 .PRECIOUS: %.grpc.pb.cc
