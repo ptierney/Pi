@@ -42,11 +42,12 @@ target_link_libraries(mc_grpc_proto
 
 # Targets greeter_[async_](client|server)
 foreach(_target
-  car_server)
+  car_server keyboard_client)
   add_executable(${_target} "${_target}.cc")
   target_link_libraries(${_target}
     mc_grpc_proto
     pigpio
+    ncurses
     absl::flags
     absl::flags_parse
     ${_REFLECTION}

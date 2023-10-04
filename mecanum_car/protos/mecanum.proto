@@ -8,18 +8,18 @@ service CarServer {
 
 // All values refer to birds-eye view of car
 message MoveRequest {
-    // Forward = 1000
-    // Back = -1000
+    // Forward = 255
+    // Back = -255
     // No Movement = 0
     sint32 forward_back = 1;
 
-    // Left = 1000
-    // Back = -1000
+    // Left = 255
+    // Right = -255
     // No Movement = 0
     sint32 left_right = 2;
 
-    // Clockwise = 1000
-    // Counterclockwise = -1000
+    // Clockwise = 255
+    // Counterclockwise = -255
     // No Rotation = 0
     sint32 rotation = 3;
 }

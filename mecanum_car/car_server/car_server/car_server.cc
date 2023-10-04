@@ -63,6 +63,8 @@ const int WHEEL_PIN_RB_R = 18;
 bool RUNNING = true;
 std::unique_ptr<Server> GRPC_SERVER;
 
+void setReverse(int);
+
 class CarServerServiceImpl final : public CarServer::Service {
     Status SendMovement(ServerContext* context, const MoveRequest* request,
                         MoveReply* reply) override {
@@ -70,6 +72,9 @@ class CarServerServiceImpl final : public CarServer::Service {
         // Read data
         // Update GPIO pins
         cout << "Got Move Request" << endl;
+
+        // basic test
+        setReverse(100);
 
         return Status::OK;
     }
@@ -129,6 +134,32 @@ void RunServer() {
     GRPC_SERVER->Wait();
 }
 
+// range 0 - 255
+void setForwardPins(int value) {
+    gpioPWM(WHEEL_PIN_LF_F, value);
+    gpioPWM(WHEEL_PIN_RF_F, value);
+    gpioPWM(WHEEL_PIN_LB_F, value);
+    gpioPWM(WHEEL_PIN_RB_F, value);
+}
+
+// range 0 - 255
+void setReversePins(int value) {
+    gpioPWM(WHEEL_PIN_LF_R, 0);
+    gpioPWM(WHEEL_PIN_RF_R, 0);
+    gpioPWM(WHEEL_PIN_LB_R, 0);
+    gpioPWM(WHEEL_PIN_RB_R, 0);
+}
+
+void setForward(int value) {
+    setForwardPins(value);
+    setReversePins(0);
+}
+
+void setReverse(int value) {
+    setForwardPins(0);
+    setReversePins(value);
+}
+
 
 int main(int argc, char** argv) {
     if (gpioInitialise() < 0) {
@@ -152,15 +183,7 @@ int main(int argc, char** argv) {
     gpioSetMode(WHEEL_PIN_RB_F, PI_OUTPUT);
     gpioSetMode(WHEEL_PIN_RB_R, PI_OUTPUT);
 
-    gpioPWM(WHEEL_PIN_LF_F, 100);
-    gpioPWM(WHEEL_PIN_RF_F, 100);
-    gpioPWM(WHEEL_PIN_LB_F, 100);
-    gpioPWM(WHEEL_PIN_RB_F, 100);
-    
-    gpioPWM(WHEEL_PIN_LF_R, 0);
-    gpioPWM(WHEEL_PIN_RF_R, 0);
-    gpioPWM(WHEEL_PIN_LB_R, 0);
-    gpioPWM(WHEEL_PIN_RB_R, 0);
+    setForward(100);
 
     std::thread t(checkThreadShutdown);
     RunServer();

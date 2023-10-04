@@ -33,6 +33,11 @@ all: system-check car_server
 car_server: mecanum.pb.o mecanum.grpc.pb.o car_server.o
 	$(CXX) $^ $(LDFLAGS) -o $@
 
+keyboard_client: mecanum.pb.o mecanum.grpc.pb.o keyboard_client.o
+	$(CXX) $^ $(LDFLAGS) -o $@
+
+
+
 .PRECIOUS: %.grpc.pb.cc
 %.grpc.pb.cc: %.proto
 	$(PROTOC) -I $(PROTOS_PATH) --grpc_out=. --plugin=protoc-gen-grpc=$(GRPC_CPP_PLUGIN_PATH) $<
