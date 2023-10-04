@@ -63,18 +63,22 @@ const int WHEEL_PIN_RB_R = 18;
 bool RUNNING = true;
 std::unique_ptr<Server> GRPC_SERVER;
 
+void setForward(int);
 void setReverse(int);
 
 class CarServerServiceImpl final : public CarServer::Service {
     Status SendMovement(ServerContext* context, const MoveRequest* request,
                         MoveReply* reply) override {
         
-        // Read data
-        // Update GPIO pins
         cout << "Got Move Request" << endl;
 
-        // basic test
-        setReverse(100);
+        int forward_back = request->forward_back();
+        int left_right = request->left_right();
+
+        if (forward_back > 0)
+            setForward(forward_back);
+        else
+            setReverse(forward_back * -1);
 
         return Status::OK;
     }
@@ -144,10 +148,10 @@ void setForwardPins(int value) {
 
 // range 0 - 255
 void setReversePins(int value) {
-    gpioPWM(WHEEL_PIN_LF_R, 0);
-    gpioPWM(WHEEL_PIN_RF_R, 0);
-    gpioPWM(WHEEL_PIN_LB_R, 0);
-    gpioPWM(WHEEL_PIN_RB_R, 0);
+    gpioPWM(WHEEL_PIN_LF_R, value);
+    gpioPWM(WHEEL_PIN_RF_R, value);
+    gpioPWM(WHEEL_PIN_LB_R, value);
+    gpioPWM(WHEEL_PIN_RB_R, value);
 }
 
 void setForward(int value) {
