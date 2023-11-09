@@ -46,7 +46,7 @@ foreach(_target
   add_executable(${_target} "${_target}.cc")
   target_link_libraries(${_target}
     mc_grpc_proto
-    pigpio
+#    pigpio
     ncurses
     absl::flags
     absl::flags_parse
