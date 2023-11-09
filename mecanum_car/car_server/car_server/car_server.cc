@@ -38,6 +38,8 @@ using mecanum::MoveReply;
 // * Implement client and server between PI and desktop computer
 // * Have key presses trigger car movement
 
+// Interesting site on mecanum control: https://www.roboteq.com/applications/all-blogs/5-driving-mecanum-wheels-omnidirectional-robots
+
 // Assume where wires protrude is the front of the car
 
 // Naming Guide:
@@ -66,19 +68,28 @@ std::unique_ptr<Server> GRPC_SERVER;
 void setForward(int);
 void setReverse(int);
 
+// TODO: Read this Reddit thread
+// https://www.reddit.com/r/FTC/comments/2sfwro/how_do_you_program_mecanum_wheels/
+// There should be a generic-ish solution
+
+// TODO:
+// When changing wheel direction, you must EASE into, otherwise there appears to be an power / amp spike
+
 class CarServerServiceImpl final : public CarServer::Service {
     Status SendMovement(ServerContext* context, const MoveRequest* request,
                         MoveReply* reply) override {
         
-        cout << "Got Move Request" << endl;
+        cout << "Move Request || forward_back=" << request->forward_back() << " || left_right=" << request->left_right() << endl;
 
         int forward_back = request->forward_back();
         int left_right = request->left_right();
 
+        int normalized_val = (forward_back / 100.0) * 255;
+
         if (forward_back > 0)
-            setForward(forward_back);
+            setForward(normalized_val);
         else
-            setReverse(forward_back * -1);
+            setReverse(normalized_val * -1);
 
         return Status::OK;
     }
@@ -164,6 +175,16 @@ void setReverse(int value) {
     setReversePins(value);
 }
 
+void setPinsZero() {
+  gpioPWM(WHEEL_PIN_LF_F, 0);
+  gpioPWM(WHEEL_PIN_LF_R, 0);
+  gpioPWM(WHEEL_PIN_RF_F, 0);
+  gpioPWM(WHEEL_PIN_RF_R, 0);
+  gpioPWM(WHEEL_PIN_LB_F, 0);
+  gpioPWM(WHEEL_PIN_LB_R, 0);
+  gpioPWM(WHEEL_PIN_RB_F, 0);
+  gpioPWM(WHEEL_PIN_RB_R, 0);
+}
 
 int main(int argc, char** argv) {
     if (gpioInitialise() < 0) {
@@ -187,22 +208,14 @@ int main(int argc, char** argv) {
     gpioSetMode(WHEEL_PIN_RB_F, PI_OUTPUT);
     gpioSetMode(WHEEL_PIN_RB_R, PI_OUTPUT);
 
-    setForward(100);
+    setPinsZero();
 
     std::thread t(checkThreadShutdown);
     RunServer();
     t.join();
-
-    // Reset pins
-    gpioPWM(WHEEL_PIN_LF_F, 0);
-    gpioPWM(WHEEL_PIN_LF_R, 0);
-    gpioPWM(WHEEL_PIN_RF_F, 0);
-    gpioPWM(WHEEL_PIN_RF_R, 0);
-    gpioPWM(WHEEL_PIN_LB_F, 0);
-    gpioPWM(WHEEL_PIN_LB_R, 0);
-    gpioPWM(WHEEL_PIN_RB_F, 0);
-    gpioPWM(WHEEL_PIN_RB_R, 0);
-
+    
+    setPinsZero();
+ 
     cout << "Shutting down GPIO" << endl;
     
     gpioTerminate();
