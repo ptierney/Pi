@@ -84,7 +84,9 @@ class CarServerServiceImpl final : public CarServer::Service {
         int forward_back = request->forward_back();
         int left_right = request->left_right();
 
-        int normalized_val = (forward_back / 100.0) * 255;
+        // Max speed is 255
+        int SPEED = 180;
+        int normalized_val = (forward_back / 100.0) * SPEED;
 
         if (forward_back > 0)
             setForward(normalized_val);
