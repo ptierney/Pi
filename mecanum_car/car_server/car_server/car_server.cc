@@ -84,12 +84,22 @@ class CarServerServiceImpl final : public CarServer::Service {
         int forward_back = request->forward_back();
         int left_right = request->left_right();
 
-        int normalized_val = (forward_back / 100.0) * 255;
+        int normalized_fb_val = (forward_back / 100.0) * 255;
+        int normalized_lr_val = (left_right / 100.0) * 255;
 
-        if (forward_back > 0)
-            setForward(normalized_val);
-        else
-            setReverse(normalized_val * -1);
+        if (forward_back != 0) {
+            if (forward_back > 0)
+                setForward(normalized_fb_val);
+            else
+                setReverse(normalized_fb_val * -1);
+        }
+
+        if (left_right != 0) {
+            if (left_right > 0)
+                setLeft(normalized_lr_val);
+            else
+                setRight(normalized_lr_val * -1);
+        }
 
         return Status::OK;
     }
@@ -165,15 +175,40 @@ void setReversePins(int value) {
     gpioPWM(WHEEL_PIN_RB_R, value);
 }
 
-void setForward(int value) {
-    setForwardPins(value);
-    setReversePins(0);
+void setLeftPins(int value) {
+    gpioPWM(WHEEL_PIN_LF_R, value);
+    gpioPWM(WHEEL_PIN_LB_F, value);
+    gpioPWM(WHEEL_PIN_RF_F, value);
+    gpioPWM(WHEEL_PIN_RB_R, value);
+}
+
+void setRightPins(int value) {
+    gpioPWM(WHEEL_PIN_LF_F, value);
+    gpioPWM(WHEEL_PIN_LB_R, value);
+    gpioPWM(WHEEL_PIN_RF_R, value);
+    gpioPWM(WHEEL_PIN_RB_F, value);
+}
+
+void setLeft(int value) {
+    setPinsZero();
+    setLeftPins(value);
+}
+
+void setRight(int value) {
+    setPinsZero();
+    setRightPins(value);
 }
 
 void setReverse(int value) {
-    setForwardPins(0);
+    setPinsZero();
     setReversePins(value);
 }
+
+void setForward(int value) {
+    setPinsZero();
+    setForwardPins(value);
+}
+
 
 void setPinsZero() {
   gpioPWM(WHEEL_PIN_LF_F, 0);

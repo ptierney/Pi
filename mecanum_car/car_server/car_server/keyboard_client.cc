@@ -88,6 +88,12 @@ void keyRightArrow(CarClient& cc) {
     cc.MoveCar(0, -100);
 }
 
+void keyStop(CarClient& cc) {
+    cout << "Stop" << endl;
+
+    cc.MoveCar(0, 0);
+}
+
 
 int main(int argc, char **argv) {
   absl::ParseCommandLine(argc, argv);
@@ -125,11 +131,17 @@ int main(int argc, char **argv) {
     case KEY_RIGHT:
         keyRightArrow(carClient);
       break;
+      
+    case KEY_BACKSPACE:
+        keyStop(carClient);
+      break;
 
     default:
       printw("%c", ch);
     }
   }
+
+  keyStop(carClient);
   
   refresh();
   getch();
