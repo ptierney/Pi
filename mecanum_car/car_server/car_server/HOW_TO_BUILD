@@ -1,1 +1,3 @@
 Run with `. ./build` (note period)
+
+For keyboard client, open CMakeLists.txt and comment out line 49 "pigpio" with a #
