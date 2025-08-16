@@ -50,14 +50,14 @@ using mecanum::MoveReply;
 // F = Forward
 // R = Reverse
 
-const int WHEEL_PIN_LF_F = 23;
-const int WHEEL_PIN_LF_R = 24;
+const int WHEEL_PIN_LF_F = 20;
+const int WHEEL_PIN_LF_R = 21;
 
-const int WHEEL_PIN_RF_F = 20;
-const int WHEEL_PIN_RF_R = 21;
+const int WHEEL_PIN_RF_F = 5;
+const int WHEEL_PIN_RF_R = 6;
 
-const int WHEEL_PIN_LB_F = 5;
-const int WHEEL_PIN_LB_R = 6;
+const int WHEEL_PIN_LB_F = 23;
+const int WHEEL_PIN_LB_R = 24;
 
 const int WHEEL_PIN_RB_F = 17;
 const int WHEEL_PIN_RB_R = 18;
@@ -67,6 +67,9 @@ std::unique_ptr<Server> GRPC_SERVER;
 
 void setForward(int);
 void setReverse(int);
+void setLeft(int);
+void setRight(int);
+void setStop();
 
 // TODO: Read this Reddit thread
 // https://www.reddit.com/r/FTC/comments/2sfwro/how_do_you_program_mecanum_wheels/
@@ -101,6 +104,10 @@ class CarServerServiceImpl final : public CarServer::Service {
                 setLeft(normalized_lr_val);
             else
                 setRight(normalized_lr_val * -1);
+        }
+
+        if (left_right == 0 && forward_back == 0) {
+            setStop();
         }
 
         return Status::OK;
@@ -161,6 +168,18 @@ void RunServer() {
     GRPC_SERVER->Wait();
 }
 
+void setPinsZero() {
+  gpioPWM(WHEEL_PIN_LF_F, 0);
+  gpioPWM(WHEEL_PIN_LF_R, 0);
+  gpioPWM(WHEEL_PIN_RF_F, 0);
+  gpioPWM(WHEEL_PIN_RF_R, 0);
+  gpioPWM(WHEEL_PIN_LB_F, 0);
+  gpioPWM(WHEEL_PIN_LB_R, 0);
+  gpioPWM(WHEEL_PIN_RB_F, 0);
+  gpioPWM(WHEEL_PIN_RB_R, 0);
+}
+
+
 // range 0 - 255
 void setForwardPins(int value) {
     gpioPWM(WHEEL_PIN_LF_F, value);
@@ -191,6 +210,10 @@ void setRightPins(int value) {
     gpioPWM(WHEEL_PIN_RB_F, value);
 }
 
+void setStop() {
+    setPinsZero();
+}
+
 void setLeft(int value) {
     setPinsZero();
     setLeftPins(value);
@@ -212,16 +235,6 @@ void setForward(int value) {
 }
 
 
-void setPinsZero() {
-  gpioPWM(WHEEL_PIN_LF_F, 0);
-  gpioPWM(WHEEL_PIN_LF_R, 0);
-  gpioPWM(WHEEL_PIN_RF_F, 0);
-  gpioPWM(WHEEL_PIN_RF_R, 0);
-  gpioPWM(WHEEL_PIN_LB_F, 0);
-  gpioPWM(WHEEL_PIN_LB_R, 0);
-  gpioPWM(WHEEL_PIN_RB_F, 0);
-  gpioPWM(WHEEL_PIN_RB_R, 0);
-}
 
 int main(int argc, char** argv) {
     if (gpioInitialise() < 0) {
