@@ -34,9 +34,9 @@ final class DriveViewModel: ObservableObject {
 
 
                 self.transport = t
-                // after you create `t: TS`
-                let base = GRPCCore.GRPCClient(transport: t)   // wrap the transport
-                self.client = Mecanum_CarServer.Client(wrapping: base)   // ⬅︎ initializer takes GRPCClient<TS>
+
+                let base = GRPCCore.GRPCClient(transport: t)
+                self.client = Mecanum_CarServer.Client(wrapping: base)
 
                 self.isConnected = true
                 self.status = "Connected"
@@ -62,6 +62,9 @@ final class DriveViewModel: ObservableObject {
 
 
     // MARK: RPC
+    
+    // Not working
+    // Read https://developer.apple.com/documentation/technotes/tn3179-understanding-local-network-privacy
 
     private func send(frontBack: Int32, leftRight: Int32) {
         print("SendMovement -> forwardBack=\(frontBack), leftRight=\(leftRight)")
@@ -86,7 +89,7 @@ final class DriveViewModel: ObservableObject {
         }
     }
 
-    // Arrow helpers (parity with your C++)
+    // Arrow helpers (parity with C++)
     func up()    { send(frontBack:  100, leftRight:   0) }
     func down()  { send(frontBack: -100, leftRight:   0) }
     func left()  { send(frontBack:    0, leftRight: 100) }
