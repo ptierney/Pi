@@ -1,0 +1,623 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CD14E1442E8A43D70090E124 /* GRPCProtobuf in Frameworks */ = {isa = PBXBuildFile; productRef = CD14E1432E8A43D70090E124 /* GRPCProtobuf */; };
+		CDE362612E89F61F004A6A0C /* GRPCCore in Frameworks */ = {isa = PBXBuildFile; productRef = CDE362602E89F61F004A6A0C /* GRPCCore */; };
+		CDE362642E89F68D004A6A0C /* GRPCNIOTransportHTTP2TransportServices in Frameworks */ = {isa = PBXBuildFile; productRef = CDE362632E89F68D004A6A0C /* GRPCNIOTransportHTTP2TransportServices */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CDFAB00E2E624452008FAEEA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDFAAFF82E624451008FAEEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CDFAAFFF2E624451008FAEEA;
+			remoteInfo = MecanumRemote;
+		};
+		CDFAB0182E624452008FAEEA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDFAAFF82E624451008FAEEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CDFAAFFF2E624451008FAEEA;
+			remoteInfo = MecanumRemote;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		CDFAB0002E624451008FAEEA /* MecanumRemote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MecanumRemote.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CDFAB00D2E624452008FAEEA /* MecanumRemoteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MecanumRemoteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CDFAB0172E624452008FAEEA /* MecanumRemoteUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MecanumRemoteUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		CDFAB0022E624451008FAEEA /* MecanumRemote */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = MecanumRemote;
+			sourceTree = "<group>";
+		};
+		CDFAB0102E624452008FAEEA /* MecanumRemoteTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = MecanumRemoteTests;
+			sourceTree = "<group>";
+		};
+		CDFAB01A2E624452008FAEEA /* MecanumRemoteUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = MecanumRemoteUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CDFAAFFD2E624451008FAEEA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CD14E1442E8A43D70090E124 /* GRPCProtobuf in Frameworks */,
+				CDE362642E89F68D004A6A0C /* GRPCNIOTransportHTTP2TransportServices in Frameworks */,
+				CDE362612E89F61F004A6A0C /* GRPCCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CDFAB00A2E624452008FAEEA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CDFAB0142E624452008FAEEA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CDFAAFF72E624451008FAEEA = {
+			isa = PBXGroup;
+			children = (
+				CDFAB0022E624451008FAEEA /* MecanumRemote */,
+				CDFAB0102E624452008FAEEA /* MecanumRemoteTests */,
+				CDFAB01A2E624452008FAEEA /* MecanumRemoteUITests */,
+				CDFAB0012E624451008FAEEA /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CDFAB0012E624451008FAEEA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CDFAB0002E624451008FAEEA /* MecanumRemote.app */,
+				CDFAB00D2E624452008FAEEA /* MecanumRemoteTests.xctest */,
+				CDFAB0172E624452008FAEEA /* MecanumRemoteUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CDFAAFFF2E624451008FAEEA /* MecanumRemote */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CDFAB0212E624452008FAEEA /* Build configuration list for PBXNativeTarget "MecanumRemote" */;
+			buildPhases = (
+				CDFAAFFC2E624451008FAEEA /* Sources */,
+				CDFAAFFD2E624451008FAEEA /* Frameworks */,
+				CDFAAFFE2E624451008FAEEA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				CDFAB0022E624451008FAEEA /* MecanumRemote */,
+			);
+			name = MecanumRemote;
+			packageProductDependencies = (
+				CDE362602E89F61F004A6A0C /* GRPCCore */,
+				CDE362632E89F68D004A6A0C /* GRPCNIOTransportHTTP2TransportServices */,
+				CD14E1432E8A43D70090E124 /* GRPCProtobuf */,
+			);
+			productName = MecanumRemote;
+			productReference = CDFAB0002E624451008FAEEA /* MecanumRemote.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CDFAB00C2E624452008FAEEA /* MecanumRemoteTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CDFAB0242E624452008FAEEA /* Build configuration list for PBXNativeTarget "MecanumRemoteTests" */;
+			buildPhases = (
+				CDFAB0092E624452008FAEEA /* Sources */,
+				CDFAB00A2E624452008FAEEA /* Frameworks */,
+				CDFAB00B2E624452008FAEEA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CDFAB00F2E624452008FAEEA /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				CDFAB0102E624452008FAEEA /* MecanumRemoteTests */,
+			);
+			name = MecanumRemoteTests;
+			packageProductDependencies = (
+			);
+			productName = MecanumRemoteTests;
+			productReference = CDFAB00D2E624452008FAEEA /* MecanumRemoteTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		CDFAB0162E624452008FAEEA /* MecanumRemoteUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CDFAB0272E624452008FAEEA /* Build configuration list for PBXNativeTarget "MecanumRemoteUITests" */;
+			buildPhases = (
+				CDFAB0132E624452008FAEEA /* Sources */,
+				CDFAB0142E624452008FAEEA /* Frameworks */,
+				CDFAB0152E624452008FAEEA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CDFAB0192E624452008FAEEA /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				CDFAB01A2E624452008FAEEA /* MecanumRemoteUITests */,
+			);
+			name = MecanumRemoteUITests;
+			packageProductDependencies = (
+			);
+			productName = MecanumRemoteUITests;
+			productReference = CDFAB0172E624452008FAEEA /* MecanumRemoteUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CDFAAFF82E624451008FAEEA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1630;
+				LastUpgradeCheck = 1630;
+				TargetAttributes = {
+					CDFAAFFF2E624451008FAEEA = {
+						CreatedOnToolsVersion = 16.3;
+					};
+					CDFAB00C2E624452008FAEEA = {
+						CreatedOnToolsVersion = 16.3;
+						TestTargetID = CDFAAFFF2E624451008FAEEA;
+					};
+					CDFAB0162E624452008FAEEA = {
+						CreatedOnToolsVersion = 16.3;
+						TestTargetID = CDFAAFFF2E624451008FAEEA;
+					};
+				};
+			};
+			buildConfigurationList = CDFAAFFB2E624451008FAEEA /* Build configuration list for PBXProject "MecanumRemote" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CDFAAFF72E624451008FAEEA;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				CDE3625F2E89F61F004A6A0C /* XCRemoteSwiftPackageReference "grpc-swift-2" */,
+				CDE362622E89F68D004A6A0C /* XCRemoteSwiftPackageReference "grpc-swift-nio-transport" */,
+				CD14E1422E8A43D70090E124 /* XCRemoteSwiftPackageReference "grpc-swift-protobuf" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = CDFAB0012E624451008FAEEA /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CDFAAFFF2E624451008FAEEA /* MecanumRemote */,
+				CDFAB00C2E624452008FAEEA /* MecanumRemoteTests */,
+				CDFAB0162E624452008FAEEA /* MecanumRemoteUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CDFAAFFE2E624451008FAEEA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CDFAB00B2E624452008FAEEA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CDFAB0152E624452008FAEEA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CDFAAFFC2E624451008FAEEA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CDFAB0092E624452008FAEEA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CDFAB0132E624452008FAEEA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CDFAB00F2E624452008FAEEA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CDFAAFFF2E624451008FAEEA /* MecanumRemote */;
+			targetProxy = CDFAB00E2E624452008FAEEA /* PBXContainerItemProxy */;
+		};
+		CDFAB0192E624452008FAEEA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CDFAAFFF2E624451008FAEEA /* MecanumRemote */;
+			targetProxy = CDFAB0182E624452008FAEEA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		CDFAB01F2E624452008FAEEA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		CDFAB0202E624452008FAEEA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CDFAB0222E624452008FAEEA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 29QRGMQNFQ;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				NEW_SETTING = "";
+				PRODUCT_BUNDLE_IDENTIFIER = be.tierney.MecanumRemote;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CDFAB0232E624452008FAEEA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 29QRGMQNFQ;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				NEW_SETTING = "";
+				PRODUCT_BUNDLE_IDENTIFIER = be.tierney.MecanumRemote;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		CDFAB0252E624452008FAEEA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = be.tierney.MecanumRemoteTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MecanumRemote.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MecanumRemote";
+			};
+			name = Debug;
+		};
+		CDFAB0262E624452008FAEEA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = be.tierney.MecanumRemoteTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MecanumRemote.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MecanumRemote";
+			};
+			name = Release;
+		};
+		CDFAB0282E624452008FAEEA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = be.tierney.MecanumRemoteUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = MecanumRemote;
+			};
+			name = Debug;
+		};
+		CDFAB0292E624452008FAEEA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = be.tierney.MecanumRemoteUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = MecanumRemote;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CDFAAFFB2E624451008FAEEA /* Build configuration list for PBXProject "MecanumRemote" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CDFAB01F2E624452008FAEEA /* Debug */,
+				CDFAB0202E624452008FAEEA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CDFAB0212E624452008FAEEA /* Build configuration list for PBXNativeTarget "MecanumRemote" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CDFAB0222E624452008FAEEA /* Debug */,
+				CDFAB0232E624452008FAEEA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CDFAB0242E624452008FAEEA /* Build configuration list for PBXNativeTarget "MecanumRemoteTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CDFAB0252E624452008FAEEA /* Debug */,
+				CDFAB0262E624452008FAEEA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CDFAB0272E624452008FAEEA /* Build configuration list for PBXNativeTarget "MecanumRemoteUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CDFAB0282E624452008FAEEA /* Debug */,
+				CDFAB0292E624452008FAEEA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CD14E1422E8A43D70090E124 /* XCRemoteSwiftPackageReference "grpc-swift-protobuf" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/grpc/grpc-swift-protobuf.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.1;
+			};
+		};
+		CDE3625F2E89F61F004A6A0C /* XCRemoteSwiftPackageReference "grpc-swift-2" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/grpc/grpc-swift-2.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.0;
+			};
+		};
+		CDE362622E89F68D004A6A0C /* XCRemoteSwiftPackageReference "grpc-swift-nio-transport" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/grpc/grpc-swift-nio-transport.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CD14E1432E8A43D70090E124 /* GRPCProtobuf */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CD14E1422E8A43D70090E124 /* XCRemoteSwiftPackageReference "grpc-swift-protobuf" */;
+			productName = GRPCProtobuf;
+		};
+		CDE362602E89F61F004A6A0C /* GRPCCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CDE3625F2E89F61F004A6A0C /* XCRemoteSwiftPackageReference "grpc-swift-2" */;
+			productName = GRPCCore;
+		};
+		CDE362632E89F68D004A6A0C /* GRPCNIOTransportHTTP2TransportServices */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CDE362622E89F68D004A6A0C /* XCRemoteSwiftPackageReference "grpc-swift-nio-transport" */;
+			productName = GRPCNIOTransportHTTP2TransportServices;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = CDFAAFF82E624451008FAEEA /* Project object */;
+}
