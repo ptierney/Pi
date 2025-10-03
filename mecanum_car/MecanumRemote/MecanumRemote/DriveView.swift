@@ -1,102 +1,121 @@
 import SwiftUI
 import SwiftProtobuf
 import GRPCCore
+import GRPCNIOTransportHTTP2
 import GRPCNIOTransportHTTP2TransportServices
-
-/// iOS/Darwin HTTP/2 client transport (Network.framework via NIO Transport Services)
-typealias TS = GRPCNIOTransportHTTP2TransportServices.HTTP2ClientTransport.TransportServices
+import Network
+import NIO
 
 @MainActor
 final class DriveViewModel: ObservableObject {
     @Published var host: String = "192.168.1.139"
-    @Published var port: Int = 50051
+    @Published var port: Int = 51555
     @Published var status: String = "Disconnected"
     @Published var isConnecting: Bool = false
     @Published private(set) var isConnected: Bool = false
 
-    private var client: Mecanum_CarServer.Client<TS>?
-    private var transport: TS?
+    // Strong ref for the permission probe (instance, not static)
+    private var permissionProbe: NWConnection?
 
-    func connect() {
-        Task { [weak self] in
-            guard let self, !self.isConnecting else { return }
-            self.isConnecting = true
-            self.status = "Connecting…"
-
-            do {
-                // TransportServices (Network.framework) HTTP/2 client transport.
-                // This is the v2 pattern: init with a ResolvableTarget + config.
-                let t = try TS(
-                    target: .ipv4(address: self.host, port: self.port),
-                    transportSecurity: .plaintext,   // use .tls() for TLS
-                    config: .defaults                // NOTE: no parentheses
-                )
-
-
-                self.transport = t
-
-                let base = GRPCCore.GRPCClient(transport: t)
-                self.client = Mecanum_CarServer.Client(wrapping: base)
-
-                self.isConnected = true
-                self.status = "Connected"
-            } catch {
-                self.status = "Connect failed: \(error.localizedDescription)"
-                self.transport = nil
-                self.client = nil
-                self.isConnected = false
-            }
-
-            self.isConnecting = false
+    /// Tries a lightweight TCP connect to trigger iOS "Local Network" permission.
+    func triggerLocalNetworkPermissionCheck(port: Int = 22) {
+        guard let nwPort = NWEndpoint.Port(rawValue: UInt16(port)) else {
+            self.status = "Invalid port \(port)"
+            return
         }
+
+        let host = NWEndpoint.Host(self.host)
+        let params = NWParameters.tcp
+        let conn = NWConnection(host: host, port: nwPort, using: params)
+
+        // keep a strong ref while the probe is running
+        self.permissionProbe = conn
+
+        conn.stateUpdateHandler = { [weak self] state in
+            guard let self = self else { return }
+
+            switch state {
+            case .ready:
+                // hop to the main actor to touch @Published state / properties
+                Task { @MainActor in
+                    self.status = "Ping succeeded (port \(port))"
+                    self.permissionProbe = nil
+                }
+                conn.cancel()
+
+            case .failed(let error):
+                Task { @MainActor in
+                    self.status = "Ping failed: \(error.localizedDescription)"
+                    self.permissionProbe = nil
+                }
+                conn.cancel()
+
+            case .waiting(let error):
+                Task { @MainActor in
+                    self.status = "Ping waiting: \(error.localizedDescription)"
+                }
+
+            default:
+                break
+            }
+        }
+
+        conn.start(queue: DispatchQueue.global(qos: .default))
     }
 
-
+    func connect() {
+        triggerLocalNetworkPermissionCheck(port: self.port);
+    }
 
     func disconnect() {
-        transport = nil
-        client = nil
         isConnected = false
         status = "Disconnected"
     }
 
-
     // MARK: RPC
     
-    // Not working
-    // Read https://developer.apple.com/documentation/technotes/tn3179-understanding-local-network-privacy
-
-    private func send(frontBack: Int32, leftRight: Int32) {
-        print("SendMovement -> forwardBack=\(frontBack), leftRight=\(leftRight)")
-
-        guard let client else {
-            status = "Not connected"
-            print("Not Connected")
-            return
-        }
-        Task {
-            do {
+    private func send(frontBack: Int32, leftRight: Int32) async {
+        do {
+            try await withGRPCClient(
+                transport: .http2NIOPosix(
+                    target: .ipv4(address: self.host, port: self.port),
+                    transportSecurity: .plaintext
+                )
+            ) { client in
                 var req = Mecanum_MoveRequest()
                 req.forwardBack = frontBack
                 req.leftRight   = leftRight
-                let reply = try await client.sendMovement(req)
-                print("SendMovement <- success=\(reply.success)")
-                status = reply.success ? "OK" : "Server replied: failure"
-            } catch {
-                print("SendMovement !! error=\(error)")
-                status = "RPC error: \(error.localizedDescription)"
+                
+                let client = Mecanum_CarServer.Client(wrapping: client)
+                
+                do {
+                    let reply: Mecanum_MoveReply = try await client.sendMovement(req)
+                    print("Did movement with reply success = \(reply.success)")
+                } catch {
+                    print("sendMovement failed: \(error)")
+                }
             }
+        } catch {
+            print("Fail");
+        }
+    }
+    
+    private func sendWithTask(frontBack: Int32, leftRight: Int32) {
+        Task {
+            await send(frontBack: frontBack, leftRight: leftRight);
         }
     }
 
     // Arrow helpers (parity with C++)
-    func up()    { send(frontBack:  100, leftRight:   0) }
-    func down()  { send(frontBack: -100, leftRight:   0) }
-    func left()  { send(frontBack:    0, leftRight: 100) }
-    func right() { send(frontBack:    0, leftRight: -100) }
+    func up() { sendWithTask(frontBack:  100, leftRight:   0) }
+    func down() { sendWithTask(frontBack: -100, leftRight:   0) }
+    func left() { sendWithTask(frontBack:    0, leftRight: 100) }
+    func right() { sendWithTask(frontBack:    0, leftRight: -100) }
+    func stop() { sendWithTask(frontBack:    0, leftRight: 0) }
 }
 
 struct DriveView: View {
+    @Environment(\.scenePhase) private var scenePhase
     @StateObject private var vm = DriveViewModel()
 
     var body: some View {
@@ -145,7 +164,25 @@ struct DriveView: View {
             .padding(.vertical, 24)
 
             Spacer()
+            
+            VStack(spacing: 16) {
+                Button { vm.stop() } label: {
+                    Image(systemName: "nosign").font(.system(size: 56))
+                }
+            }
+            .padding(.vertical, 24)
         }
         .navigationTitle("Mecanum Remote")
+        .onChange(of: scenePhase) { oldPhase, newPhase in
+            switch newPhase {
+            case .active:
+                print("App is active")
+            case .inactive, .background:
+                vm.stop()
+            @unknown default:
+                print("Unknown scene phase")
+            }
+        }
     }
+
 }

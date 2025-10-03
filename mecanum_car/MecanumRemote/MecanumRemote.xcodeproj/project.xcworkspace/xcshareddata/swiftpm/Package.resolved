@@ -1,5 +1,5 @@
 {
-  "originHash" : "60c415a865e5e4482e7e8e5ab0a3187a24419f18d3b3b1cfd1014404cf0d3330",
+  "originHash" : "1150e7e2f54aaa45065c6ef80f15284a8a4c05b195e6cd96fa4798096323fcd0",
   "pins" : [
     {
       "identity" : "grpc-swift-2",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "0e52abf7ea0fca7ffe876953aa41feff84cc6e29",
         "version" : "2.1.0"
+      }
+    },
+    {
+      "identity" : "grpc-swift-extras",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/grpc/grpc-swift-extras.git",
+      "state" : {
+        "revision" : "dd34dae247c0b49db0e81dca5da64033b02cb49c",
+        "version" : "2.0.0"
       }
     },
     {
@@ -89,6 +98,15 @@
       "state" : {
         "revision" : "95ba0316a9b733e92bb6b071255ff46263bbe7dc",
         "version" : "3.15.1"
+      }
+    },
+    {
+      "identity" : "swift-distributed-tracing",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-distributed-tracing.git",
+      "state" : {
+        "revision" : "6600888f4cb5bbf1bcac51000f60b2cbd224c91b",
+        "version" : "1.3.0"
       }
     },
     {
@@ -179,6 +197,15 @@
       "state" : {
         "revision" : "2547102afd04fe49f1b286090f13ebce07284980",
         "version" : "1.31.1"
+      }
+    },
+    {
+      "identity" : "swift-service-context",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-service-context.git",
+      "state" : {
+        "revision" : "1983448fefc717a2bc2ebde5490fe99873c5b8a6",
+        "version" : "1.2.1"
       }
     },
     {

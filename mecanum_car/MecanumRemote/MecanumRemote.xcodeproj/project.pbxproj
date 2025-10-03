@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		CD14E1442E8A43D70090E124 /* GRPCProtobuf in Frameworks */ = {isa = PBXBuildFile; productRef = CD14E1432E8A43D70090E124 /* GRPCProtobuf */; };
+		CD7361822E8ED2EE00425966 /* GRPCNIOTransportHTTP2 in Frameworks */ = {isa = PBXBuildFile; productRef = CD7361812E8ED2EE00425966 /* GRPCNIOTransportHTTP2 */; };
+		CD7361842E8ED2EE00425966 /* GRPCNIOTransportHTTP2Posix in Frameworks */ = {isa = PBXBuildFile; productRef = CD7361832E8ED2EE00425966 /* GRPCNIOTransportHTTP2Posix */; };
+		CD73619E2E8EF2B400425966 /* GRPCReflectionService in Frameworks */ = {isa = PBXBuildFile; productRef = CD73619D2E8EF2B400425966 /* GRPCReflectionService */; };
+		CD7361A02E8EF33200425966 /* GRPCHealthService in Frameworks */ = {isa = PBXBuildFile; productRef = CD73619F2E8EF33200425966 /* GRPCHealthService */; };
+		CD7361A22E8EF33200425966 /* GRPCInteropTests in Frameworks */ = {isa = PBXBuildFile; productRef = CD7361A12E8EF33200425966 /* GRPCInteropTests */; };
+		CD7361A42E8EF33200425966 /* GRPCOTelTracingInterceptors in Frameworks */ = {isa = PBXBuildFile; productRef = CD7361A32E8EF33200425966 /* GRPCOTelTracingInterceptors */; };
+		CD7361A62E8EF33200425966 /* GRPCServiceLifecycle in Frameworks */ = {isa = PBXBuildFile; productRef = CD7361A52E8EF33200425966 /* GRPCServiceLifecycle */; };
 		CDE362612E89F61F004A6A0C /* GRPCCore in Frameworks */ = {isa = PBXBuildFile; productRef = CDE362602E89F61F004A6A0C /* GRPCCore */; };
 		CDE362642E89F68D004A6A0C /* GRPCNIOTransportHTTP2TransportServices in Frameworks */ = {isa = PBXBuildFile; productRef = CDE362632E89F68D004A6A0C /* GRPCNIOTransportHTTP2TransportServices */; };
 /* End PBXBuildFile section */
@@ -58,8 +65,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD7361A22E8EF33200425966 /* GRPCInteropTests in Frameworks */,
+				CD7361842E8ED2EE00425966 /* GRPCNIOTransportHTTP2Posix in Frameworks */,
+				CD7361A42E8EF33200425966 /* GRPCOTelTracingInterceptors in Frameworks */,
 				CD14E1442E8A43D70090E124 /* GRPCProtobuf in Frameworks */,
+				CD7361A02E8EF33200425966 /* GRPCHealthService in Frameworks */,
 				CDE362642E89F68D004A6A0C /* GRPCNIOTransportHTTP2TransportServices in Frameworks */,
+				CD73619E2E8EF2B400425966 /* GRPCReflectionService in Frameworks */,
+				CD7361A62E8EF33200425966 /* GRPCServiceLifecycle in Frameworks */,
+				CD7361822E8ED2EE00425966 /* GRPCNIOTransportHTTP2 in Frameworks */,
 				CDE362612E89F61F004A6A0C /* GRPCCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -124,6 +138,13 @@
 				CDE362602E89F61F004A6A0C /* GRPCCore */,
 				CDE362632E89F68D004A6A0C /* GRPCNIOTransportHTTP2TransportServices */,
 				CD14E1432E8A43D70090E124 /* GRPCProtobuf */,
+				CD7361812E8ED2EE00425966 /* GRPCNIOTransportHTTP2 */,
+				CD7361832E8ED2EE00425966 /* GRPCNIOTransportHTTP2Posix */,
+				CD73619D2E8EF2B400425966 /* GRPCReflectionService */,
+				CD73619F2E8EF33200425966 /* GRPCHealthService */,
+				CD7361A12E8EF33200425966 /* GRPCInteropTests */,
+				CD7361A32E8EF33200425966 /* GRPCOTelTracingInterceptors */,
+				CD7361A52E8EF33200425966 /* GRPCServiceLifecycle */,
 			);
 			productName = MecanumRemote;
 			productReference = CDFAB0002E624451008FAEEA /* MecanumRemote.app */;
@@ -211,6 +232,7 @@
 				CDE3625F2E89F61F004A6A0C /* XCRemoteSwiftPackageReference "grpc-swift-2" */,
 				CDE362622E89F68D004A6A0C /* XCRemoteSwiftPackageReference "grpc-swift-nio-transport" */,
 				CD14E1422E8A43D70090E124 /* XCRemoteSwiftPackageReference "grpc-swift-protobuf" */,
+				CD73619C2E8EF2B400425966 /* XCRemoteSwiftPackageReference "grpc-swift-extras" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = CDFAB0012E624451008FAEEA /* Products */;
@@ -585,6 +607,14 @@
 				minimumVersion = 2.1.1;
 			};
 		};
+		CD73619C2E8EF2B400425966 /* XCRemoteSwiftPackageReference "grpc-swift-extras" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/grpc/grpc-swift-extras.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 		CDE3625F2E89F61F004A6A0C /* XCRemoteSwiftPackageReference "grpc-swift-2" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/grpc/grpc-swift-2.git";
@@ -608,6 +638,41 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CD14E1422E8A43D70090E124 /* XCRemoteSwiftPackageReference "grpc-swift-protobuf" */;
 			productName = GRPCProtobuf;
+		};
+		CD7361812E8ED2EE00425966 /* GRPCNIOTransportHTTP2 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CDE362622E89F68D004A6A0C /* XCRemoteSwiftPackageReference "grpc-swift-nio-transport" */;
+			productName = GRPCNIOTransportHTTP2;
+		};
+		CD7361832E8ED2EE00425966 /* GRPCNIOTransportHTTP2Posix */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CDE362622E89F68D004A6A0C /* XCRemoteSwiftPackageReference "grpc-swift-nio-transport" */;
+			productName = GRPCNIOTransportHTTP2Posix;
+		};
+		CD73619D2E8EF2B400425966 /* GRPCReflectionService */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CD73619C2E8EF2B400425966 /* XCRemoteSwiftPackageReference "grpc-swift-extras" */;
+			productName = GRPCReflectionService;
+		};
+		CD73619F2E8EF33200425966 /* GRPCHealthService */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CD73619C2E8EF2B400425966 /* XCRemoteSwiftPackageReference "grpc-swift-extras" */;
+			productName = GRPCHealthService;
+		};
+		CD7361A12E8EF33200425966 /* GRPCInteropTests */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CD73619C2E8EF2B400425966 /* XCRemoteSwiftPackageReference "grpc-swift-extras" */;
+			productName = GRPCInteropTests;
+		};
+		CD7361A32E8EF33200425966 /* GRPCOTelTracingInterceptors */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CD73619C2E8EF2B400425966 /* XCRemoteSwiftPackageReference "grpc-swift-extras" */;
+			productName = GRPCOTelTracingInterceptors;
+		};
+		CD7361A52E8EF33200425966 /* GRPCServiceLifecycle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CD73619C2E8EF2B400425966 /* XCRemoteSwiftPackageReference "grpc-swift-extras" */;
+			productName = GRPCServiceLifecycle;
 		};
 		CDE362602E89F61F004A6A0C /* GRPCCore */ = {
 			isa = XCSwiftPackageProductDependency;
