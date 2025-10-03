@@ -7,18 +7,10 @@
 
 import SwiftUI
 
-
-import SwiftProtobuf
-import GRPCCore
-import GRPCNIOTransportHTTP2TransportServices
-
-
 @main
 struct MecanumRemoteApp: App {
-    
     var body: some Scene {
         WindowGroup {
-           // ContentView()
             NavigationView {
                 DriveView()
             }

@@ -1,0 +1,15 @@
+# Adjust these for your tree
+PROTO_DIR=../../protos
+OUT_DIR=Generated/Protos
+PLUGIN="$(brew --prefix)/bin/protoc-gen-grpc-swift-2"
+
+mkdir -p "$OUT_DIR"
+
+protoc \
+  --proto_path="$PROTO_DIR" \
+  --swift_out="$OUT_DIR" \
+  --swift_opt=Visibility=Public \
+  --plugin=protoc-gen-grpc-swift="$PLUGIN" \
+  --grpc-swift_out="$OUT_DIR" \
+  --grpc-swift_opt=Client=true,Server=false,Visibility=Public \
+  "$PROTO_DIR/mecanum.proto"
