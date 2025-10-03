@@ -110,6 +110,7 @@ class CarServerServiceImpl final : public CarServer::Service {
             setStop();
         }
 
+        reply->set_success(true);
         return Status::OK;
     }
 };
@@ -146,7 +147,9 @@ void checkThreadShutdown(void) {
 }
 
 void RunServer() {
-    std::string server_address = "0.0.0.0:50051";
+    std::string server_address = "0.0.0.0:51555";
+//    std::string server_address = "0.0.0.0:50051";
+//    std::string server_address = "192.168.1.139:51555";
 
     CarServerServiceImpl service;
 
