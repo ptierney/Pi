@@ -9,6 +9,7 @@
 #include <map>
 #include <memory>
 #include <thread>
+#include <cstdlib>
 
 #include <pigpio.h>
 
@@ -262,6 +263,15 @@ int main(int argc, char** argv) {
     gpioSetMode(WHEEL_PIN_RB_R, PI_OUTPUT);
 
     setPinsZero();
+
+    // start video server
+    std::system(
+    "gst-launch-1.0 -v v4l2src device=/dev/video0 io-mode=2 ! "
+    "image/jpeg,width=1280,height=720,framerate=30/1 ! "
+    "jpegparse ! multipartmux boundary=mjbndry ! "
+    "tcpserversink host=0.0.0.0 port=5000 &");
+
+    cout << "Started video server" << endl;
 
     std::thread t(checkThreadShutdown);
     RunServer();
