@@ -66,10 +66,17 @@ const int WHEEL_PIN_RB_R = 18;
 bool RUNNING = true;
 std::unique_ptr<Server> GRPC_SERVER;
 
+// Max speed is 255
+// This is set to not draw too much current from the battery,
+// as well as not overheat the h-bridges
+int SPEED = 180;
+
 void setForward(int);
 void setReverse(int);
 void setLeft(int);
 void setRight(int);
+void setRotateLeft(int);
+void setRotateRight(int);
 void setStop();
 
 // TODO: Read this Reddit thread
@@ -79,41 +86,69 @@ void setStop();
 // TODO:
 // When changing wheel direction, you must EASE into, otherwise there appears to be an power / amp spike
 
+
 class CarServerServiceImpl final : public CarServer::Service {
+public:
+    // Nothing here
+private:
+
+    // Takes a normalized (wire) value and converts it to the value for the pin
+    int normalizedToPWM(int normalized_val) {
+        return (normalized_val / 100.0) * SPEED;
+    }
+
+    void moveForwardBack(int val) {
+        int pwm_val = normalizedToPWM(val);
+        if (val > 0)
+            setForward(pwm_val);
+        else
+            setReverse(pwm_val * -1);  
+    }
+
+    void moveLeftRight(int val) {
+        int pwm_val = normalizedToPWM(val);
+        if (val > 0)
+            setLeft(pwm_val);
+        else
+            setRight(pwm_val * -1);
+    }
+
+    void moveRotation(int val) {
+        int pwm_val = normalizedToPWM(val);
+        if (val > 0)
+            setRotateRight(pwm_val);
+        else
+            setRotateLeft(pwm_val * -1);
+    }
+    
     Status SendMovement(ServerContext* context, const MoveRequest* request,
                         MoveReply* reply) override {
-        
-        cout << "Move Request || forward_back=" << request->forward_back() << " || left_right=" << request->left_right() << endl;
 
         int forward_back = request->forward_back();
         int left_right = request->left_right();
-        // Max speed is 255
-        int SPEED = 180;
+        int rotation = request->rotation();
+        
+        cout << "Move Request || forward_back=" << forward_back <<
+            " || left_right=" << left_right <<
+            " || rotation=" << rotation << endl;
 
-        int normalized_fb_val = (forward_back / 100.0) * SPEED;
-        int normalized_lr_val = (left_right / 100.0) * SPEED;
-
-        if (forward_back != 0) {
-            if (forward_back > 0)
-                setForward(normalized_fb_val);
-            else
-                setReverse(normalized_fb_val * -1);
-        }
-
-        if (left_right != 0) {
-            if (left_right > 0)
-                setLeft(normalized_lr_val);
-            else
-                setRight(normalized_lr_val * -1);
-        }
-
-        if (left_right == 0 && forward_back == 0) {
+        // stop case
+        if (forward_back == 0 && left_right == 0 && rotation == 0) {
             setStop();
+        } else if (forward_back != 0) { // forward/back case
+            moveForwardBack(forward_back);
+        } else if (left_right != 0) { // strafe case
+            moveLeftRight(left_right);
+        } else if (rotation != 0) { // rotation case
+            moveRotation(rotation);
+        } else {
+            cout << "Unknown command" << endl;
         }
 
         reply->set_success(true);
         return Status::OK;
     }
+
 };
 
 
@@ -207,12 +242,28 @@ void setLeftPins(int value) {
     gpioPWM(WHEEL_PIN_RB_R, value);
 }
 
+
 void setRightPins(int value) {
     gpioPWM(WHEEL_PIN_LF_F, value);
     gpioPWM(WHEEL_PIN_LB_R, value);
     gpioPWM(WHEEL_PIN_RF_R, value);
     gpioPWM(WHEEL_PIN_RB_F, value);
 }
+
+void setRotateLeftPins(int value) {
+    gpioPWM(WHEEL_PIN_LF_R, value);
+    gpioPWM(WHEEL_PIN_LB_R, value);
+    gpioPWM(WHEEL_PIN_RF_F, value);
+    gpioPWM(WHEEL_PIN_RB_F, value);
+}
+
+void setRotateRightPins(int value) {
+    gpioPWM(WHEEL_PIN_LF_F, value);
+    gpioPWM(WHEEL_PIN_LB_F, value);
+    gpioPWM(WHEEL_PIN_RF_R, value);
+    gpioPWM(WHEEL_PIN_RB_R, value);
+}
+
 
 void setStop() {
     setPinsZero();
@@ -238,6 +289,15 @@ void setForward(int value) {
     setForwardPins(value);
 }
 
+void setRotateLeft(int value) {
+    setPinsZero();
+    setRotateLeftPins(value);
+}
+
+void setRotateRight(int value) {
+    setPinsZero();
+    setRotateRightPins(value);
+}
 
 
 int main(int argc, char** argv) {
