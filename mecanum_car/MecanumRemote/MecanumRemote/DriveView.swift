@@ -10,6 +10,7 @@ import NIO
 final class DriveViewModel: ObservableObject {
     @Published var host: String = "192.168.1.139"
     @Published var port: Int = 51555
+    @Published var videoPort: UInt16 = 5000
     @Published var status: String = "Disconnected"
     @Published var isConnecting: Bool = false
     @Published private(set) var isConnected: Bool = false
@@ -74,7 +75,7 @@ final class DriveViewModel: ObservableObject {
 
     // MARK: RPC
     
-    private func send(frontBack: Int32, leftRight: Int32) async {
+    private func send(frontBack: Int32, leftRight: Int32, rotation: Int32 = 0) async {
         do {
             try await withGRPCClient(
                 transport: .http2NIOPosix(
@@ -85,6 +86,7 @@ final class DriveViewModel: ObservableObject {
                 var req = Mecanum_MoveRequest()
                 req.forwardBack = frontBack
                 req.leftRight   = leftRight
+                req.rotation = rotation
                 
                 let client = Mecanum_CarServer.Client(wrapping: client)
                 
@@ -100,9 +102,9 @@ final class DriveViewModel: ObservableObject {
         }
     }
     
-    private func sendWithTask(frontBack: Int32, leftRight: Int32) {
+    private func sendWithTask(frontBack: Int32, leftRight: Int32, rotation: Int32 = 0) {
         Task {
-            await send(frontBack: frontBack, leftRight: leftRight);
+            await send(frontBack: frontBack, leftRight: leftRight, rotation: rotation);
         }
     }
 
@@ -111,6 +113,8 @@ final class DriveViewModel: ObservableObject {
     func down() { sendWithTask(frontBack: -100, leftRight:   0) }
     func left() { sendWithTask(frontBack:    0, leftRight: 100) }
     func right() { sendWithTask(frontBack:    0, leftRight: -100) }
+    func turnLeft()  { sendWithTask(frontBack: 0, leftRight:  0, rotation: -100)  }
+    func turnRight() { sendWithTask(frontBack: 0, leftRight: 0, rotation: 100)  }
     func stop() { sendWithTask(frontBack:    0, leftRight: 0) }
 }
 
@@ -120,6 +124,8 @@ struct DriveView: View {
 
     var body: some View {
         VStack(spacing: 20) {
+            
+            /*
             HStack {
                 TextField("Host", text: $vm.host)
                     .textInputAutocapitalization(.never)
@@ -137,6 +143,16 @@ struct DriveView: View {
             }
             .padding(.horizontal)
 
+             */
+            
+            GeometryReader { geometry in
+                MJPEGViewer(host: vm.host, port: vm.videoPort)
+                    .aspectRatio(contentMode: .fit)
+                    .scaleEffect(0.25, anchor: .topLeading) // 25% visual scale
+                    .fixedSize()
+                    .background(Color.black)
+            }
+            
             Text(vm.status)
                 .font(.footnote.monospaced())
                 .foregroundColor(.secondary)
@@ -144,22 +160,37 @@ struct DriveView: View {
             Spacer()
 
             VStack(spacing: 16) {
-                Button { vm.up() } label: {
-                    Image(systemName: "arrow.up.circle.fill").font(.system(size: 56))
+                HStack(spacing: 40) {
+                    Button(action: {}) {
+                        Image(systemName: "arrow.uturn.left.circle.fill").font(.system(size: 56))
+                    }
+                    .pressActions(onPress: { vm.turnLeft() }, onRelease: { vm.stop() })
+                    Button(action: {}) {
+                        Image(systemName: "arrow.up.circle.fill").font(.system(size: 56))
+                    }
+                    .pressActions(onPress: { vm.up() }, onRelease: { vm.stop() })
+                    Button(action: {}) {
+                        Image(systemName: "arrow.uturn.right.circle.fill").font(.system(size: 56))
+                    }
+                    .pressActions(onPress: { vm.turnRight() }, onRelease: { vm.stop() })
                 }
 
                 HStack(spacing: 40) {
-                    Button { vm.left() } label: {
+                    Button(action: {}) {
                         Image(systemName: "arrow.left.circle.fill").font(.system(size: 56))
                     }
-                    Button { vm.right() } label: {
+                    .pressActions(onPress: { vm.left() }, onRelease: { vm.stop() })
+
+                    Button(action: {}) {
                         Image(systemName: "arrow.right.circle.fill").font(.system(size: 56))
                     }
+                    .pressActions(onPress: { vm.right() }, onRelease: { vm.stop() })
                 }
 
-                Button { vm.down() } label: {
+                Button(action: {}) {
                     Image(systemName: "arrow.down.circle.fill").font(.system(size: 56))
                 }
+                .pressActions(onPress: { vm.down() }, onRelease: { vm.stop() })
             }
             .padding(.vertical, 24)
 
@@ -171,8 +202,13 @@ struct DriveView: View {
                 }
             }
             .padding(.vertical, 24)
+            
+            
+
+            
+            
         }
-        .navigationTitle("Mecanum Remote")
+//        .navigationTitle("Mecanum Remote")
         .onChange(of: scenePhase) { oldPhase, newPhase in
             switch newPhase {
             case .active:
@@ -185,4 +221,36 @@ struct DriveView: View {
         }
     }
 
+}
+
+
+private struct PressActions: ViewModifier {
+    @State private var isDown = false
+    let onPress: () -> Void
+    let onRelease: () -> Void
+
+    func body(content: Content) -> some View {
+        content
+            .onLongPressGesture(
+                minimumDuration: 0,               // fire immediately
+                maximumDistance: .infinity,
+                pressing: { pressing in
+                    if pressing && !isDown {
+                        isDown = true
+                        onPress()                  // emit move once
+                    } else if !pressing && isDown {
+                        isDown = false
+                        onRelease()                // emit stop once
+                    }
+                },
+                perform: {}                        // no long-press action
+            )
+    }
+}
+
+private extension View {
+    func pressActions(onPress: @escaping () -> Void,
+                      onRelease: @escaping () -> Void) -> some View {
+        modifier(PressActions(onPress: onPress, onRelease: onRelease))
+    }
 }
