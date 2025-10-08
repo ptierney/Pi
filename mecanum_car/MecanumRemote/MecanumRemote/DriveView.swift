@@ -12,7 +12,6 @@ final class DriveViewModel: ObservableObject {
     @Published var port: Int = 51555
     @Published var videoPort: UInt16 = 5000
     @Published var status: String = "Disconnected"
-    @Published var isConnecting: Bool = false
     @Published private(set) var isConnected: Bool = false
 
     // Strong ref for the permission probe (instance, not static)
@@ -39,7 +38,8 @@ final class DriveViewModel: ObservableObject {
             case .ready:
                 // hop to the main actor to touch @Published state / properties
                 Task { @MainActor in
-                    self.status = "Ping succeeded (port \(port))"
+                    self.status = "Connected"
+                    //self.status = "Ping succeeded (port \(port))"
                     self.permissionProbe = nil
                 }
                 conn.cancel()
@@ -69,7 +69,6 @@ final class DriveViewModel: ObservableObject {
     }
 
     func disconnect() {
-        isConnected = false
         status = "Disconnected"
     }
 
@@ -212,7 +211,7 @@ struct DriveView: View {
         .onChange(of: scenePhase) { oldPhase, newPhase in
             switch newPhase {
             case .active:
-                print("App is active")
+                vm.connect()
             case .inactive, .background:
                 vm.stop()
             @unknown default:
