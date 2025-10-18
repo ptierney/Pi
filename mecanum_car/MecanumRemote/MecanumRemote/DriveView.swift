@@ -8,7 +8,7 @@ import NIO
 
 @MainActor
 final class DriveViewModel: ObservableObject {
-    @Published var host: String = "192.168.1.139"
+    @Published var host: String = "192.168.1.138"
     @Published var port: Int = 51555
     @Published var videoPort: UInt16 = 5000
     @Published var status: String = "Disconnected"

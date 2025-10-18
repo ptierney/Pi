@@ -33,11 +33,6 @@ using mecanum::CarServer;
 using mecanum::MoveRequest;
 using mecanum::MoveReply;
 
-// Breadcrumbs / next steps:
-// * Read the gRPC C++ Tutorial: https://grpc.io/docs/languages/cpp/basics/
-// * Read section on async 
-// * Implement client and server between PI and desktop computer
-// * Have key presses trigger car movement
 
 // Interesting site on mecanum control: https://www.roboteq.com/applications/all-blogs/5-driving-mecanum-wheels-omnidirectional-robots
 
@@ -85,7 +80,6 @@ void setStop();
 
 // TODO:
 // When changing wheel direction, you must EASE into, otherwise there appears to be an power / amp spike
-
 
 class CarServerServiceImpl final : public CarServer::Service {
 public:
