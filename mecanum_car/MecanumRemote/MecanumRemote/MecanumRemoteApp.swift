@@ -11,7 +11,7 @@ import SwiftUI
 struct MecanumRemoteApp: App {
     var body: some Scene {
         WindowGroup {
-            NavigationView {
+            NavigationStack {
                 DriveView()
             }
         }
